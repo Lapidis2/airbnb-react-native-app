@@ -1,10 +1,30 @@
 import { Tabs } from "expo-router";
 import React from "react";
+import { StyleSheet, View } from "react-native";
 
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+
+function BadgeIcon({
+  name,
+  color,
+  size = 24,
+  badge,
+}: {
+  name: React.ComponentProps<typeof IconSymbol>["name"];
+  color: string;
+  size?: number;
+  badge?: boolean;
+}) {
+  return (
+    <View>
+      <IconSymbol size={size} name={name} color={color} />
+      {badge && <View style={styles.badge} />}
+    </View>
+  );
+}
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -28,7 +48,7 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name="magnifyingglass" color={color} />
+            <BadgeIcon name="magnifyingglass" color={color} />
           ),
         }}
       />
@@ -37,7 +57,7 @@ export default function TabLayout() {
         options={{
           title: "Wishlist",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name="heart" color={color} />
+            <BadgeIcon name="heart" color={color} badge />
           ),
         }}
       />
@@ -46,7 +66,7 @@ export default function TabLayout() {
         options={{
           title: "Trips",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name="map" color={color} />
+            <BadgeIcon name="map" color={color} />
           ),
         }}
       />
@@ -55,7 +75,7 @@ export default function TabLayout() {
         options={{
           title: "Inbox",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name="bubble.left" color={color} />
+            <BadgeIcon name="bubble.left" color={color} badge />
           ),
         }}
       />
@@ -64,10 +84,24 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name="person" color={color} />
+            <BadgeIcon name="person" color={color} />
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  badge: {
+    position: "absolute",
+    top: -1,
+    right: -3,
+    width: 9,
+    height: 9,
+    borderRadius: 5,
+    backgroundColor: "#FF385C",
+    borderWidth: 1.5,
+    borderColor: "white",
+  },
+});

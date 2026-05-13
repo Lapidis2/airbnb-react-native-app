@@ -29,6 +29,7 @@ export interface Listing {
   amenities: string[];
   reviews: Review[];
   isSaved: boolean;
+  category?: string;
 }
 
 export interface User {

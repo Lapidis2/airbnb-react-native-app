@@ -15,6 +15,7 @@ interface CategoryFilterProps {
 }
 
 const defaultCategories = [
+  "All",
   "Chefs",
   "Beach",
   "Amazing pools",

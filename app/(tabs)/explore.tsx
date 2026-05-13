@@ -9,7 +9,6 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FlatList, StyleSheet, View } from "react-native";
 
 export default function ExploreScreen() {
   const router = useRouter();
@@ -20,7 +19,11 @@ export default function ExploreScreen() {
   const [savedListings, setSavedListings] = useState<string[]>(
     mockListings.filter((l) => l.isSaved).map((l) => l.id),
   );
-  const [selectedCategory, setSelectedCategory] = useState<string>("Chefs");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+
+  const filteredListings = listings.filter(
+    (l) => selectedCategory === "All" || l.category === selectedCategory,
+  );
 
   const handleListing = (listing: Listing) => {
     router.push({
@@ -46,7 +49,7 @@ export default function ExploreScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
-        data={listings}
+        data={filteredListings}
         renderItem={({ item }) => (
           <ListingCard
             listing={item}

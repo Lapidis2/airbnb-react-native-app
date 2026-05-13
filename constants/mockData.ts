@@ -34,6 +34,7 @@ export const mockListings: Listing[] = [
       },
     ],
     isSaved: false,
+    category: "Amazing pools",
   },
   {
     id: "2",
@@ -60,6 +61,7 @@ export const mockListings: Listing[] = [
     amenities: ["WiFi", "Air Conditioning", "Heating"],
     reviews: [],
     isSaved: true,
+    category: "Beach",
   },
   {
     id: "3",
@@ -86,6 +88,7 @@ export const mockListings: Listing[] = [
     amenities: ["WiFi", "Kitchen", "Self check-in"],
     reviews: [],
     isSaved: false,
+    category: "Chefs",
   },
   {
     id: "4",
@@ -112,5 +115,6 @@ export const mockListings: Listing[] = [
     amenities: ["WiFi", "Kitchen", "Gym", "Doorman", "City View"],
     reviews: [],
     isSaved: false,
+    category: "Islands",
   },
 ];

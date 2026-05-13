@@ -55,7 +55,7 @@ export default function ProfileScreen() {
       style={[styles.container, { backgroundColor: colors.background }]}
       showsVerticalScrollIndicator={false}
     >
-      {/* Header */}
+   
       <Text style={[styles.header, { color: colors.text }]}>Profile</Text>
 
       {/* User Card */}
@@ -67,16 +67,16 @@ export default function ProfileScreen() {
       >
         <Image
           source={{
-            uri: "https://i.pravatar.cc/150?img=5",
+            uri: "https://i.pravatar.cc/150?img=12",
           }}
           style={styles.avatar}
         />
         <View style={styles.userInfo}>
           <Text style={[styles.userName, { color: colors.text }]}>
-            Jane Doe
+            Jean Pierre Hitayezu
           </Text>
           <Text style={[styles.userEmail, { color: colors.textSecondary }]}>
-            jane.doe@email.com
+            jeanpierre@gemail.com
           </Text>
         </View>
         <TouchableOpacity style={styles.editButton}>
@@ -84,7 +84,7 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Menu Items */}
+     
       <View style={styles.menuSection}>
         {menuItems.map((item) => (
           <MenuItem
@@ -97,7 +97,7 @@ export default function ProfileScreen() {
         ))}
       </View>
 
-      {/* Logout Button */}
+     
       <TouchableOpacity
         style={[styles.logoutButton, { borderColor: "#FF385C" }]}
       >

@@ -163,7 +163,7 @@ export default function ListingDetailScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   imageGallery: {
     width: "100%",

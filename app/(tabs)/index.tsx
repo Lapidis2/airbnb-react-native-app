@@ -6,26 +6,25 @@ import { Listing } from "@/types";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+export default function WishlistScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
+  const insets = useSafeAreaInsets();
   const [listings, setListings] = useState<Listing[]>(
     mockListings.map((l) => ({ ...l, isSaved: true })),
   );
 
   const handleListing = (listing: Listing) => {
-    router.push({
-      pathname: "/listing-detail",
-      params: { id: listing.id },
-    });
+    router.push({ pathname: "/listing-detail", params: { id: listing.id } });
   };
 
   const handleRemove = (listing: Listing) => {
@@ -35,7 +34,10 @@ export default function HomeScreen() {
   if (listings.length === 0) {
     return (
       <View
-        style={[styles.emptyContainer, { backgroundColor: colors.background }]}
+        style={[
+          styles.emptyContainer,
+          { backgroundColor: colors.background, paddingTop: insets.top + 8 },
+        ]}
       >
         <Text style={[styles.emptyTitle, { color: colors.text }]}>
           No Saved Listings
@@ -66,9 +68,25 @@ export default function HomeScreen() {
         )}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
-          <Text style={[styles.header, { color: colors.text }]}>
-            Saved Listings
-          </Text>
+          <View style={[styles.headerContainer, { paddingTop: insets.top + 8 }]}>
+            <Text style={[styles.header, { color: colors.text }]}>Nice</Text>
+            <View style={styles.filterRow}>
+              <TouchableOpacity
+                style={[styles.filterButton, { borderColor: colors.border }]}
+              >
+                <Text style={[styles.filterText, { color: colors.text }]}>
+                  May 14 - 19
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.filterButton, { borderColor: colors.border }]}
+              >
+                <Text style={[styles.filterText, { color: colors.text }]}>
+                  Guests
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         }
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
@@ -78,15 +96,32 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container: { flex: 1 },
+  headerContainer: {
+    paddingHorizontal: 12,
+    paddingBottom: 8,
   },
   header: {
     fontSize: 32,
     fontWeight: "bold",
-    marginHorizontal: 12,
-    marginTop: 12,
-    marginBottom: 8,
+    marginBottom: 12,
+  },
+  filterRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  filterButton: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 24,
+    borderWidth: 1,
+    backgroundColor: "#F7F7F7",
+  },
+  filterText: {
+    fontSize: 13,
+    fontWeight: "500",
+    textAlign: "center",
   },
   emptyContainer: {
     flex: 1,
