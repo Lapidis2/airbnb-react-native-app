@@ -38,7 +38,7 @@ export default function ListingDetailScreen() {
       showsVerticalScrollIndicator={false}
     >
       {/* Image Gallery with overlaid header */}
-      <View style={styles.imageGallery}>
+      <View style={[styles.imageGallery, { height: 340 + insets.top }]}>
         <Image source={{ uri: listing.image }} style={styles.mainImage} />
         <View style={[styles.headerBar, { paddingTop: insets.top + 8 }]}>
           <TouchableOpacity style={styles.headerButton} onPress={() => router.back()}>
@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
   },
   imageGallery: {
     width: "100%",
-    height: 340,
   },
   mainImage: {
     width: "100%",
