@@ -1,3 +1,4 @@
+import { HelloWave } from "@/components/hello-wave";
 import { ListingCard } from "@/components/listing-card";
 import { mockListings } from "@/constants/mockData";
 import { Colors } from "@/constants/theme";
@@ -69,7 +70,10 @@ export default function WishlistScreen() {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
           <View style={[styles.headerContainer, { paddingTop: insets.top + 8 }]}>
-            <Text style={[styles.header, { color: colors.text }]}>Nice</Text>
+            <View style={styles.titleRow}>
+              <Text style={[styles.header, { color: colors.text }]}>Nice</Text>
+              <HelloWave />
+            </View>
             <View style={styles.filterRow}>
               <TouchableOpacity
                 style={[styles.filterButton, { borderColor: colors.border }]}
@@ -101,10 +105,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingBottom: 8,
   },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 12,
+  },
   header: {
     fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 12,
   },
   filterRow: {
     flexDirection: "row",
