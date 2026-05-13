@@ -1,0 +1,116 @@
+import { Listing } from "@/types";
+
+export const mockListings: Listing[] = [
+  {
+    id: "1",
+    title: "Abiansemal, Indonesia",
+    description: "Beautiful villa in Abiansemal",
+    location: "Abiansemal",
+    country: "Indonesia",
+    image:
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=500&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=500&fit=crop",
+    ],
+    price: 360,
+    rating: 4.87,
+    reviewCount: 71,
+    bedrooms: 2,
+    beds: 2,
+    bathrooms: 1,
+    host: {
+      name: "John Doe",
+      avatar: "https://i.pravatar.cc/150?img=1",
+      responseTime: "1 hour",
+    },
+    amenities: ["WiFi", "Kitchen", "Air Conditioning", "Pool"],
+    reviews: [
+      {
+        id: "1",
+        author: "Jane Smith",
+        rating: 5,
+        comment: "Amazing place!",
+        date: "2024-01-15",
+      },
+    ],
+    isSaved: false,
+  },
+  {
+    id: "2",
+    title: "Private room in Yonkers",
+    description: "Private room in Yonkers close to bus/train station",
+    location: "Yonkers",
+    country: "New York, United States",
+    image:
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=500&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=500&fit=crop",
+    ],
+    price: 83,
+    rating: 5.0,
+    reviewCount: 3,
+    bedrooms: 1,
+    beds: 1,
+    bathrooms: 1,
+    host: {
+      name: "Mike Johnson",
+      avatar: "https://i.pravatar.cc/150?img=2",
+      responseTime: "2 hours",
+    },
+    amenities: ["WiFi", "Air Conditioning", "Heating"],
+    reviews: [],
+    isSaved: true,
+  },
+  {
+    id: "3",
+    title: "Private room in home hosted by Craig",
+    description: "Cozy private bedroom with shared bathroom",
+    location: "Yonkers",
+    country: "New York, United States",
+    image:
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&h=500&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&h=500&fit=crop",
+    ],
+    price: 32,
+    rating: 4.5,
+    reviewCount: 12,
+    bedrooms: 1,
+    beds: 1,
+    bathrooms: 1,
+    host: {
+      name: "Craig",
+      avatar: "https://i.pravatar.cc/150?img=3",
+      responseTime: "3 hours",
+    },
+    amenities: ["WiFi", "Kitchen", "Self check-in"],
+    reviews: [],
+    isSaved: false,
+  },
+  {
+    id: "4",
+    title: "Luxury Apartment in Manhattan",
+    description: "Modern luxury apartment with city views",
+    location: "Manhattan",
+    country: "New York, United States",
+    image:
+      "https://images.unsplash.com/photo-1493857671505-72967e0e0760?w=500&h=500&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1493857671505-72967e0e0760?w=500&h=500&fit=crop",
+    ],
+    price: 250,
+    rating: 4.95,
+    reviewCount: 156,
+    bedrooms: 2,
+    beds: 2,
+    bathrooms: 2,
+    host: {
+      name: "Sarah Williams",
+      avatar: "https://i.pravatar.cc/150?img=4",
+      responseTime: "30 minutes",
+    },
+    amenities: ["WiFi", "Kitchen", "Gym", "Doorman", "City View"],
+    reviews: [],
+    isSaved: false,
+  },
+];
