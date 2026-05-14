@@ -17,93 +17,33 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AVATAR_PLACEHOLDER = "https://i.pravatar.cc/150?img=12";
 
-function SectionHeader({ title }: { title: string }) {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
-  return (
-    <Text style={[sectionStyles.header, { color: colors.textSecondary }]}>
-      {title}
-    </Text>
-  );
-}
-
-const sectionStyles = StyleSheet.create({
-  header: {
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 0.8,
-    textTransform: "uppercase",
-    marginBottom: 4,
-    marginTop: 24,
-    paddingHorizontal: 16,
-  },
-});
-
 function SettingsRow({
   icon,
-  iconColor = "#FF385C",
   label,
-  value,
   onPress,
-  destructive,
-  hideChevron,
+  showChevron = true,
 }: {
   icon: React.ComponentProps<typeof IconSymbol>["name"];
-  iconColor?: string;
   label: string;
-  value?: string;
   onPress?: () => void;
-  destructive?: boolean;
-  hideChevron?: boolean;
+  showChevron?: boolean;
 }) {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
   return (
     <TouchableOpacity
-      style={[rowStyles.row, { borderBottomColor: colors.border, backgroundColor: colors.background }]}
+      style={[styles.row, { borderBottomColor: colors.border }]}
       onPress={onPress}
       activeOpacity={0.6}
     >
-      <View style={[rowStyles.iconWrap, { backgroundColor: destructive ? "#FFF0F0" : "#FFF5F5" }]}>
-        <IconSymbol name={icon} size={18} color={destructive ? "#FF385C" : iconColor} />
-      </View>
-      <Text style={[rowStyles.label, { color: destructive ? "#FF385C" : colors.text }]}>
-        {label}
-      </Text>
-      <View style={rowStyles.right}>
-        {value ? (
-          <Text style={[rowStyles.value, { color: colors.textSecondary }]} numberOfLines={1}>
-            {value}
-          </Text>
-        ) : null}
-        {!hideChevron && (
-          <IconSymbol name="chevron.right" size={16} color={colors.textSecondary} />
-        )}
-      </View>
+      <IconSymbol name={icon} size={22} color={colors.text} />
+      <Text style={[styles.rowLabel, { color: colors.text }]}>{label}</Text>
+      {showChevron && (
+        <IconSymbol name="chevron.right" size={18} color={colors.textSecondary} />
+      )}
     </TouchableOpacity>
   );
 }
-
-const rowStyles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 13,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-  },
-  iconWrap: {
-    width: 34,
-    height: 34,
-    borderRadius: 9,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 14,
-  },
-  label: { flex: 1, fontSize: 15, fontWeight: "500" },
-  right: { flexDirection: "row", alignItems: "center", gap: 6, maxWidth: 140 },
-  value: { fontSize: 13 },
-});
 
 export default function ProfileScreen() {
   const colorScheme = useColorScheme();
@@ -127,9 +67,6 @@ export default function ProfileScreen() {
   };
 
   const avatarUri = user?.avatar ?? AVATAR_PLACEHOLDER;
-  const initials = user?.name
-    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
-    : "?";
 
   return (
     <ScrollView
@@ -137,182 +74,130 @@ export default function ProfileScreen() {
       contentContainerStyle={{ paddingTop: insets.top + 8, paddingBottom: 40 }}
       showsVerticalScrollIndicator={false}
     >
-      {/* Page title */}
-      <Text style={[styles.pageTitle, { color: colors.text }]}>Profile</Text>
-
-      {/* ── Hero Card ── */}
+      {/* User Header */}
       <TouchableOpacity
-        style={[styles.heroCard, { borderColor: colors.border }]}
-        onPress={() => router.push("/edit-profile")}
-        activeOpacity={0.85}
+        style={styles.userHeader}
+        onPress={() => router.push("/personal-information")}
+        activeOpacity={0.8}
       >
-        {/* Avatar */}
-        <View style={styles.avatarWrap}>
-          <Image source={{ uri: avatarUri }} style={styles.avatar} />
-          <View style={styles.avatarBadge}>
-            <IconSymbol name="pencil" size={11} color="white" />
-          </View>
-        </View>
-
-        {/* Info */}
-        <View style={styles.heroInfo}>
-          <Text style={[styles.heroName, { color: colors.text }]}>
+        <Image source={{ uri: avatarUri }} style={styles.avatar} />
+        <View style={styles.userInfo}>
+          <Text style={[styles.userName, { color: colors.text }]}>
             {user?.name ?? "Guest"}
           </Text>
-          <Text style={[styles.heroEmail, { color: colors.textSecondary }]}>
-            {user?.email ?? ""}
+          <Text style={[styles.viewProfile, { color: colors.textSecondary }]}>
+            View profile
           </Text>
-          {user?.bio ? (
-            <Text
-              style={[styles.heroBio, { color: colors.textSecondary }]}
-              numberOfLines={2}
-            >
-              {user.bio}
-            </Text>
-          ) : (
-            <Text style={[styles.heroAddBio, { color: "#FF385C" }]}>
-              + Add a bio
-            </Text>
-          )}
         </View>
-
-        <IconSymbol name="chevron.right" size={18} color={colors.textSecondary} />
+        <IconSymbol name="chevron.right" size={20} color={colors.textSecondary} />
       </TouchableOpacity>
 
-      {/* ── Stats Row ── */}
-      <View style={[styles.statsRow, { borderColor: colors.border }]}>
-        <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: colors.text }]}>0</Text>
-          <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Trips</Text>
+      {/* Earn Money Banner */}
+      <TouchableOpacity
+        style={[styles.banner, { borderColor: colors.border }]}
+        activeOpacity={0.85}
+      >
+        <View style={styles.bannerContent}>
+          <Text style={styles.bannerTitle}>Earn money from your extra space</Text>
+          <Text style={[styles.bannerLink, { color: "#FF385C" }]}>Learn more</Text>
         </View>
-        <View style={[styles.statDivider, { backgroundColor: colors.border }]} />
-        <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: colors.text }]}>0</Text>
-          <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Wishlists</Text>
-        </View>
-        <View style={[styles.statDivider, { backgroundColor: colors.border }]} />
-        <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: colors.text }]}>0</Text>
-          <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Reviews</Text>
-        </View>
-      </View>
+      </TouchableOpacity>
 
-      {/* ── Joined date ── */}
-      {user?.joinedDate && (
-        <Text style={[styles.joinedText, { color: colors.textSecondary }]}>
-          Member since {user.joinedDate}
-        </Text>
-      )}
+      {/* Account Settings */}
+      <Text style={[styles.sectionTitle, { color: colors.text }]}>
+        Account Settings
+      </Text>
 
-      {/* ── Account ── */}
-      <SectionHeader title="Account" />
       <View style={[styles.group, { borderColor: colors.border }]}>
         <SettingsRow
           icon="person"
-          label="Edit profile"
-          value={user?.name}
-          onPress={() => router.push("/edit-profile")}
+          label="Personal information"
+          onPress={() => router.push("/personal-information")}
+        />
+        <SettingsRow
+          icon="heart"
+          label="Payments and payouts"
+          onPress={() => router.push("/payments")}
         />
         <SettingsRow
           icon="pencil"
-          iconColor="#666"
-          label="Change password"
-          onPress={() => router.push("/change-password")}
+          label="Translation"
+          onPress={() => {}}
         />
         <SettingsRow
-          icon="bubble.left"
-          iconColor="#666"
-          label="Phone number"
-          value={user?.phone ?? "Not set"}
-          onPress={() => router.push("/edit-profile")}
+          icon="gearshape.fill"
+          label="Notifications"
+          onPress={() => router.push("/notifications-settings")}
+        />
+        <SettingsRow
+          icon="gearshape.fill"
+          label="Privacy and sharing"
+          onPress={() => router.push("/privacy-sharing")}
         />
         <SettingsRow
           icon="map"
-          iconColor="#666"
-          label="Location"
-          value={user?.location ?? "Not set"}
-          onPress={() => router.push("/edit-profile")}
+          label="Travel for work"
+          onPress={() => router.push("/travel-for-work")}
         />
       </View>
 
-      {/* ── Hosting ── */}
-      <SectionHeader title="Hosting" />
+      {/* Hosting */}
+      <Text style={[styles.sectionTitle, { color: colors.text }]}>Hosting</Text>
       <View style={[styles.group, { borderColor: colors.border }]}>
         <SettingsRow
           icon="house.fill"
-          iconColor="#FF385C"
-          label="Become a host"
+          label="List your space"
           onPress={() => {}}
         />
         <SettingsRow
           icon="star.fill"
-          iconColor="#FFB800"
-          label="Reviews"
-          value="0 reviews"
+          label="Host an experience"
           onPress={() => {}}
         />
       </View>
 
-      {/* ── Preferences ── */}
-      <SectionHeader title="Preferences" />
-      <View style={[styles.group, { borderColor: colors.border }]}>
-        <SettingsRow
-          icon="gearshape.fill"
-          iconColor="#666"
-          label="Notifications"
-          onPress={() => {}}
-        />
-        <SettingsRow
-          icon="gearshape.fill"
-          iconColor="#666"
-          label="Privacy & sharing"
-          onPress={() => {}}
-        />
-        <SettingsRow
-          icon="info.circle.fill"
-          iconColor="#666"
-          label="Accessibility"
-          onPress={() => {}}
-        />
-      </View>
-
-      {/* ── Support ── */}
-      <SectionHeader title="Support" />
+      {/* Support */}
+      <Text style={[styles.sectionTitle, { color: colors.text }]}>Support</Text>
       <View style={[styles.group, { borderColor: colors.border }]}>
         <SettingsRow
           icon="questionmark.circle.fill"
-          iconColor="#666"
-          label="Help Center"
+          label="Visit the Help Center"
           onPress={() => {}}
         />
         <SettingsRow
           icon="info.circle.fill"
-          iconColor="#666"
+          label="Get help with a safety issue"
+          onPress={() => {}}
+        />
+      </View>
+
+      {/* Legal */}
+      <Text style={[styles.sectionTitle, { color: colors.text }]}>Legal</Text>
+      <View style={[styles.group, { borderColor: colors.border }]}>
+        <SettingsRow
+          icon="info.circle.fill"
           label="Terms of Service"
           onPress={() => {}}
         />
         <SettingsRow
           icon="info.circle.fill"
-          iconColor="#666"
           label="Privacy Policy"
+          onPress={() => {}}
+        />
+        <SettingsRow
+          icon="info.circle.fill"
+          label="Open source licenses"
           onPress={() => {}}
         />
       </View>
 
-      {/* ── Sign out ── */}
-      <SectionHeader title="Account actions" />
-      <View style={[styles.group, { borderColor: colors.border }]}>
-        <SettingsRow
-          icon="person"
-          label="Sign out"
-          destructive
-          hideChevron
-          onPress={handleLogout}
-        />
-      </View>
+      {/* Sign out */}
+      <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Sign out</Text>
+      </TouchableOpacity>
 
       <Text style={[styles.version, { color: colors.textSecondary }]}>
-        Airbnb Clone · v1.0.0
+        Version 1.0.0
       </Text>
     </ScrollView>
   );
@@ -320,68 +205,66 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  pageTitle: {
-    fontSize: 32,
-    fontWeight: "bold",
-    paddingHorizontal: 16,
-    marginBottom: 20,
-  },
-  heroCard: {
+  userHeader: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 16,
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    marginBottom: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
     gap: 14,
   },
-  avatarWrap: { position: "relative" },
-  avatar: { width: 68, height: 68, borderRadius: 34 },
-  avatarBadge: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: "#FF385C",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: "white",
-  },
-  heroInfo: { flex: 1 },
-  heroName: { fontSize: 17, fontWeight: "700", marginBottom: 2 },
-  heroEmail: { fontSize: 13, marginBottom: 4 },
-  heroBio: { fontSize: 12, lineHeight: 17 },
-  heroAddBio: { fontSize: 13, fontWeight: "600" },
-  statsRow: {
-    flexDirection: "row",
+  avatar: { width: 64, height: 64, borderRadius: 32 },
+  userInfo: { flex: 1 },
+  userName: { fontSize: 20, fontWeight: "700", marginBottom: 2 },
+  viewProfile: { fontSize: 14 },
+  banner: {
     marginHorizontal: 16,
-    borderRadius: 14,
+    marginBottom: 24,
+    borderRadius: 12,
     borderWidth: 1,
-    marginBottom: 8,
-    overflow: "hidden",
+    padding: 16,
+    backgroundColor: "#FAFAFA",
   },
-  statItem: { flex: 1, alignItems: "center", paddingVertical: 14 },
-  statNumber: { fontSize: 20, fontWeight: "700" },
-  statLabel: { fontSize: 11, marginTop: 2 },
-  statDivider: { width: 1 },
-  joinedText: {
-    fontSize: 12,
-    textAlign: "center",
-    marginBottom: 4,
+  bannerContent: { gap: 6 },
+  bannerTitle: { fontSize: 15, fontWeight: "600", color: "#222" },
+  bannerLink: { fontSize: 14, fontWeight: "600", textDecorationLine: "underline" },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    paddingHorizontal: 16,
+    marginBottom: 12,
+    marginTop: 8,
   },
   group: {
     marginHorizontal: 16,
-    borderRadius: 14,
+    marginBottom: 24,
+    borderRadius: 12,
     borderWidth: 1,
     overflow: "hidden",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    gap: 14,
+  },
+  rowLabel: { flex: 1, fontSize: 15, fontWeight: "500" },
+  logoutBtn: {
+    marginHorizontal: 16,
+    marginTop: 8,
+    paddingVertical: 14,
+    alignItems: "center",
+  },
+  logoutText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#FF385C",
+    textDecorationLine: "underline",
   },
   version: {
     textAlign: "center",
     fontSize: 12,
-    marginTop: 24,
+    marginTop: 16,
   },
 });

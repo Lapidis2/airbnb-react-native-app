@@ -37,7 +37,7 @@ const mockMessages = [
     subtitle: "New date and time request",
     preview: "Request pending",
     time: "3d",
-    unread: true,
+    unread: false,
   },
   {
     id: "4",

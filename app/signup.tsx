@@ -1,7 +1,7 @@
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useAuth } from "@/context/auth";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -22,11 +22,13 @@ export default function SignupScreen() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignup = async () => {
     setError("");
@@ -36,8 +38,15 @@ export default function SignupScreen() {
     }
     setLoading(true);
     try {
-      await signup(name.trim(), email.trim(), password);
-      router.replace("/(tabs)/explore");
+      await signup({
+        name: name.trim(),
+        email: email.trim(),
+        username: username.trim(),
+        phone: phone.trim(),
+        password,
+        role: "GUEST",
+      });
+      router.replace("/login");
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -58,10 +67,7 @@ export default function SignupScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Logo */}
         <Text style={styles.logo}>airbnb</Text>
-
-        {/* Heading */}
         <Text style={styles.heading}>Create your account</Text>
         <Text style={styles.subheading}>
           Join millions of hosts and guests worldwide
@@ -69,14 +75,13 @@ export default function SignupScreen() {
 
         <View style={styles.divider} />
 
-        {/* Error */}
         {error ? (
           <View style={styles.errorBox}>
             <Text style={styles.errorText}>{error}</Text>
           </View>
         ) : null}
 
-        {/* Name */}
+        {/* Full name */}
         <View style={styles.fieldWrap}>
           <Text style={styles.label}>Full name</Text>
           <TextInput
@@ -104,6 +109,33 @@ export default function SignupScreen() {
           />
         </View>
 
+        {/* Username */}
+        <View style={styles.fieldWrap}>
+          <Text style={styles.label}>Username</Text>
+          <TextInput
+            style={styles.input}
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Choose a username"
+            placeholderTextColor="#999"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </View>
+
+        {/* Phone */}
+        <View style={styles.fieldWrap}>
+          <Text style={styles.label}>Phone number</Text>
+          <TextInput
+            style={styles.input}
+            value={phone}
+            onChangeText={setPhone}
+            placeholder="Enter your phone number"
+            placeholderTextColor="#999"
+            keyboardType="phone-pad"
+          />
+        </View>
+
         {/* Password */}
         <View style={styles.fieldWrap}>
           <Text style={styles.label}>Password</Text>
@@ -128,7 +160,7 @@ export default function SignupScreen() {
           </View>
         </View>
 
-        {/* Confirm Password */}
+        {/* Confirm password */}
         <View style={styles.fieldWrap}>
           <Text style={styles.label}>Confirm password</Text>
           <TextInput
@@ -142,14 +174,12 @@ export default function SignupScreen() {
           />
         </View>
 
-        {/* Terms note */}
         <Text style={styles.terms}>
           By signing up, you agree to our{" "}
           <Text style={styles.termsLink}>Terms of Service</Text> and{" "}
           <Text style={styles.termsLink}>Privacy Policy</Text>.
         </Text>
 
-        {/* Signup Button */}
         <TouchableOpacity
           style={[styles.primaryBtn, loading && styles.primaryBtnDisabled]}
           onPress={handleSignup}
@@ -163,14 +193,12 @@ export default function SignupScreen() {
           )}
         </TouchableOpacity>
 
-        {/* Divider */}
         <View style={styles.orRow}>
           <View style={styles.orLine} />
           <Text style={styles.orText}>or</Text>
           <View style={styles.orLine} />
         </View>
 
-        {/* Social buttons */}
         <TouchableOpacity style={styles.socialBtn}>
           <FontAwesome name="apple" size={20} color="#000" style={styles.socialIcon} />
           <Text style={styles.socialBtnText}>Continue with Apple</Text>
@@ -180,7 +208,6 @@ export default function SignupScreen() {
           <Text style={styles.socialBtnText}>Continue with Google</Text>
         </TouchableOpacity>
 
-        {/* Login link */}
         <View style={styles.loginRow}>
           <Text style={styles.loginPrompt}>Already have an account? </Text>
           <TouchableOpacity onPress={() => router.push("/login")}>
@@ -194,32 +221,11 @@ export default function SignupScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: "#fff" },
-  container: {
-    paddingHorizontal: 24,
-  },
-  logo: {
-    fontSize: 32,
-    fontWeight: "800",
-    color: "#FF385C",
-    letterSpacing: -1,
-    marginBottom: 32,
-  },
-  heading: {
-    fontSize: 26,
-    fontWeight: "700",
-    color: "#222",
-    marginBottom: 6,
-  },
-  subheading: {
-    fontSize: 15,
-    color: "#666",
-    marginBottom: 24,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: "#E8E8E8",
-    marginBottom: 24,
-  },
+  container: { paddingHorizontal: 24 },
+  logo: { fontSize: 32, fontWeight: "800", color: "#FF385C", letterSpacing: -1, marginBottom: 32 },
+  heading: { fontSize: 26, fontWeight: "700", color: "#222", marginBottom: 6 },
+  subheading: { fontSize: 15, color: "#666", marginBottom: 24 },
+  divider: { height: 1, backgroundColor: "#E8E8E8", marginBottom: 24 },
   errorBox: {
     backgroundColor: "#FFF0F0",
     borderWidth: 1,
@@ -230,12 +236,7 @@ const styles = StyleSheet.create({
   },
   errorText: { color: "#CC0000", fontSize: 13 },
   fieldWrap: { marginBottom: 16 },
-  label: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#222",
-    marginBottom: 6,
-  },
+  label: { fontSize: 13, fontWeight: "600", color: "#222", marginBottom: 6 },
   input: {
     borderWidth: 1,
     borderColor: "#E8E8E8",
@@ -248,29 +249,10 @@ const styles = StyleSheet.create({
   },
   passwordRow: { position: "relative" },
   passwordInput: { paddingRight: 70 },
-  showBtn: {
-    position: "absolute",
-    right: 14,
-    top: 0,
-    bottom: 0,
-    justifyContent: "center",
-  },
-  showBtnText: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#FF385C",
-  },
-  terms: {
-    fontSize: 12,
-    color: "#888",
-    lineHeight: 18,
-    marginBottom: 20,
-  },
-  termsLink: {
-    color: "#FF385C",
-    fontWeight: "600",
-    textDecorationLine: "underline",
-  },
+  showBtn: { position: "absolute", right: 14, top: 0, bottom: 0, justifyContent: "center" },
+  showBtnText: { fontSize: 13, fontWeight: "600", color: "#FF385C" },
+  terms: { fontSize: 12, color: "#888", lineHeight: 18, marginBottom: 20 },
+  termsLink: { color: "#FF385C", fontWeight: "600", textDecorationLine: "underline" },
   primaryBtn: {
     backgroundColor: "#FF385C",
     borderRadius: 10,
@@ -279,17 +261,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   primaryBtnDisabled: { opacity: 0.7 },
-  primaryBtnText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "700",
-  },
-  orRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-    gap: 10,
-  },
+  primaryBtnText: { color: "white", fontSize: 16, fontWeight: "700" },
+  orRow: { flexDirection: "row", alignItems: "center", marginBottom: 20, gap: 10 },
   orLine: { flex: 1, height: 1, backgroundColor: "#E8E8E8" },
   orText: { fontSize: 13, color: "#999" },
   socialBtn: {
@@ -303,25 +276,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
-  socialBtnText: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: "#222",
-  },
-  socialIcon: {
-    position: "absolute",
-    left: 20,
-  },
-  loginRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 12,
-  },
+  socialBtnText: { fontSize: 15, fontWeight: "500", color: "#222" },
+  socialIcon: { position: "absolute", left: 20 },
+  loginRow: { flexDirection: "row", justifyContent: "center", marginTop: 12 },
   loginPrompt: { fontSize: 14, color: "#666" },
-  loginLink: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#FF385C",
-    textDecorationLine: "underline",
-  },
+  loginLink: { fontSize: 14, fontWeight: "700", color: "#FF385C", textDecorationLine: "underline" },
 });
