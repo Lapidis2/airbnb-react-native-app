@@ -330,12 +330,7 @@ export default function ExploreScreen() {
       selectedCategory === "All"
         ? baseListings
         : baseListings.filter(
-            (l) =>
-              l.type.toLowerCase() === selectedCategory.toLowerCase() ||
-              l.amenities.some((a) =>
-                a.toLowerCase().includes(selectedCategory.toLowerCase())
-              ) ||
-              l.location.toLowerCase().includes(selectedCategory.toLowerCase())
+            (l) => l.type.toUpperCase() === selectedCategory.toUpperCase()
           ),
     [baseListings, selectedCategory]
   );

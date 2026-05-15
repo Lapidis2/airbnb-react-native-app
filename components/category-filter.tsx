@@ -16,14 +16,10 @@ interface CategoryFilterProps {
 
 const defaultCategories = [
   "All",
-  "Chefs",
-  "Beach",
-  "Amazing pools",
-  "Islands",
-  "Lakefront",
-  "Farms",
-  "Cabins",
-  "Tiny homes",
+  "Apartment",
+  "House",
+  "Villa",
+  "Cabin",
 ];
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({

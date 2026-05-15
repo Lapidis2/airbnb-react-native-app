@@ -1,4 +1,4 @@
-// Listing types
+
 export interface Review {
   id: string;
   author: string;

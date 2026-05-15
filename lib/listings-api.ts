@@ -13,7 +13,7 @@ export interface PaginatedResponse {
   };
 }
 
-// All listings at once (no real pagination on this endpoint)
+
 export async function fetchListings(): Promise<ApiListing[]> {
   const res = await fetch(`${BASE_URL}/listings`);
   if (!res.ok) throw new Error("Failed to fetch listings");
@@ -21,14 +21,14 @@ export async function fetchListings(): Promise<ApiListing[]> {
   return Array.isArray(json.data) ? json.data : [];
 }
 
-// Search with real server-side pagination
+
 export async function fetchSearchPage(
   params: SearchParams & { page: number }
 ): Promise<PaginatedResponse> {
   const query = new URLSearchParams();
   query.set("page", String(params.page));
   query.set("limit", String(PAGE_SIZE));
-  // backend filters: location, type, minPrice, maxPrice, guests — no q param
+ 
   if (params.location) query.set("location", params.location);
   if (params.type) query.set("type", params.type);
   if (params.minPrice) query.set("minPrice", String(params.minPrice));

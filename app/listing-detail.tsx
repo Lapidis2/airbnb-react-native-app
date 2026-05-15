@@ -1,3 +1,4 @@
+import { ReservationModals } from "@/components/reservation-modals";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
@@ -6,13 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -33,8 +34,13 @@ export default function ListingDetailScreen() {
   const colors = Colors[colorScheme ?? "light"];
   const insets = useSafeAreaInsets();
   const [isSaved, setIsSaved] = useState(false);
+  const [reservationModalVisible, setReservationModalVisible] = useState(false);
 
-  const { data: listing, isLoading, isError } = useQuery<ApiListing>({
+  const {
+    data: listing,
+    isLoading,
+    isError,
+  } = useQuery<ApiListing>({
     queryKey: ["listing", id],
     queryFn: async () => {
       const res = await fetch(`${BASE_URL}/listings/${id}`);
@@ -57,7 +63,9 @@ export default function ListingDetailScreen() {
     return (
       <View style={[styles.center, { backgroundColor: colors.background }]}>
         <Text style={styles.errorIcon}>⚠️</Text>
-        <Text style={[styles.errorTitle, { color: colors.text }]}>Listing not found</Text>
+        <Text style={[styles.errorTitle, { color: colors.text }]}>
+          Listing not found
+        </Text>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Text style={styles.backBtnText}>Go back</Text>
         </TouchableOpacity>
@@ -76,7 +84,10 @@ export default function ListingDetailScreen() {
       <View style={[styles.imageGallery, { height: 340 + insets.top }]}>
         <Image source={{ uri: photoUrl }} style={styles.mainImage} />
         <View style={[styles.headerBar, { paddingTop: insets.top + 8 }]}>
-          <TouchableOpacity style={styles.headerButton} onPress={() => router.back()}>
+          <TouchableOpacity
+            style={styles.headerButton}
+            onPress={() => router.back()}
+          >
             <IconSymbol name="chevron.left" size={22} color="#222" />
           </TouchableOpacity>
           <TouchableOpacity
@@ -104,11 +115,16 @@ export default function ListingDetailScreen() {
       <View style={styles.content}>
         {/* Title + type */}
         <View style={styles.titleRow}>
-          <Text style={[styles.title, { color: colors.text }]} numberOfLines={2}>
+          <Text
+            style={[styles.title, { color: colors.text }]}
+            numberOfLines={2}
+          >
             {listing.title}
           </Text>
           <View style={[styles.typePill, { borderColor: colors.border }]}>
-            <Text style={[styles.typePillText, { color: colors.textSecondary }]}>
+            <Text
+              style={[styles.typePillText, { color: colors.textSecondary }]}
+            >
               {listing.type}
             </Text>
           </View>
@@ -157,7 +173,9 @@ export default function ListingDetailScreen() {
               {listing.guests} guests
             </Text>
           </View>
-          <View style={[styles.statDivider, { backgroundColor: colors.border }]} />
+          <View
+            style={[styles.statDivider, { backgroundColor: colors.border }]}
+          />
           <View style={styles.statItem}>
             <IconSymbol name="house.fill" size={20} color="#FF385C" />
             <Text style={[styles.statLabel, { color: colors.text }]}>
@@ -205,7 +223,8 @@ export default function ListingDetailScreen() {
             <Text style={[styles.pricePerNight, { color: colors.text }]}>
               ${listing.pricePerNight}
               <Text style={[styles.perNight, { color: colors.textSecondary }]}>
-                {" "}/night
+                {" "}
+                /night
               </Text>
             </Text>
           </View>
@@ -213,11 +232,17 @@ export default function ListingDetailScreen() {
 
         <TouchableOpacity
           style={styles.reserveButton}
-          onPress={() => alert("Reserve feature coming soon!")}
+          onPress={() => setReservationModalVisible(true)}
         >
           <Text style={styles.reserveButtonText}>Reserve</Text>
         </TouchableOpacity>
       </View>
+
+      <ReservationModals
+        visible={reservationModalVisible}
+        listing={listing}
+        onClose={() => setReservationModalVisible(false)}
+      />
     </ScrollView>
   );
 }
@@ -298,7 +323,11 @@ const styles = StyleSheet.create({
   star: { color: "#FFB800", fontSize: 14 },
   ratingText: { fontSize: 14, fontWeight: "600" },
   divider: { height: 1, marginVertical: 16 },
-  hostSection: { flexDirection: "row", alignItems: "center", marginVertical: 4 },
+  hostSection: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 4,
+  },
   hostAvatar: { width: 48, height: 48, borderRadius: 24, marginRight: 12 },
   hostInfo: { flex: 1 },
   hostName: { fontSize: 15, fontWeight: "600", marginBottom: 2 },
@@ -311,9 +340,19 @@ const styles = StyleSheet.create({
   statItem: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8 },
   statDivider: { width: 1, height: 32, marginHorizontal: 16 },
   statLabel: { fontSize: 14, fontWeight: "500" },
-  sectionTitle: { fontSize: 18, fontWeight: "600", marginBottom: 10, marginTop: 4 },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 10,
+    marginTop: 4,
+  },
   description: { fontSize: 14, lineHeight: 22, marginBottom: 16 },
-  amenitiesGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 16 },
+  amenitiesGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 16,
+  },
   amenityTag: {
     borderWidth: 1,
     paddingHorizontal: 12,

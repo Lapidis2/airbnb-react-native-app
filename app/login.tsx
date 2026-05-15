@@ -150,9 +150,9 @@ export default function LoginScreen() {
           <Text style={styles.socialBtnText}>Continue with Google</Text>
         </TouchableOpacity>
 
-        {/* Sign up link */}
+      
         <View style={styles.signupRow}>
-          <Text style={styles.signupPrompt}>Don't have an account? </Text>
+          <Text style={styles.signupPrompt}>Don&apos;t have an account? </Text>
           <TouchableOpacity onPress={() => router.push("/signup")}>
             <Text style={styles.signupLink}>Sign up</Text>
           </TouchableOpacity>
