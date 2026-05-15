@@ -88,6 +88,10 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="wishlist-listings"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

@@ -16,6 +16,9 @@ const queryClient = new QueryClient({
   },
 });
 
+
+fetch("https://airbnb-api-c4yx.onrender.com/api/v1/listings").catch(() => {});
+
 function DeepLinkHandler() {
   const router = useRouter();
   useEffect(() => {
@@ -46,6 +49,8 @@ export default function RootLayout() {
               <Stack.Screen name="login" options={{ headerShown: false }} />
               <Stack.Screen name="signup" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="wishlist-listings" options={{ headerShown: false }} />
+              <Stack.Screen name="wishlist-map" options={{ headerShown: false }} />
               <Stack.Screen name="listing-detail" options={{ headerShown: false }} />
               <Stack.Screen name="edit-profile" options={{ headerShown: false }} />
               <Stack.Screen name="change-password" options={{ headerShown: false }} />
